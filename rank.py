@@ -97,4 +97,7 @@ network = pickle.load( open( "topusers0_3000.p", "rb" ) )
 #output_vec(network)
 #print output_converge(testinput,50)
 
-print output_converge(network, 100)
+vector = output_converge(network, 100) * 1000
+print vector
+print vector.max()
+print numpy.argmax(vector)
