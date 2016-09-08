@@ -5,6 +5,11 @@ import pickle
 from collections import defaultdict
 
 def id_2_index(network) :
+    """
+    Scan through the network and return a map between the userID to its
+    index in this program. and a map between user id to the number of
+    people its following.
+    """
     lookup = {}
     numfollowing = defaultdict(int)
     i = 0
@@ -20,6 +25,10 @@ def id_2_index(network) :
     return lookup, numfollowing
 
 def to_sparse_matrix(network, user_id, numfollowing):
+    """
+    Given the network graph, the user_id, and following mappings, return
+    a sparse representation of the matrix for page rank.
+    """
     matrix = []
     for user, followers in network.items():
         for follower in followers:
@@ -28,6 +37,10 @@ def to_sparse_matrix(network, user_id, numfollowing):
     return matrix, len(user_id)
 
 def to_numpy (sparse, numUser) :
+    """
+    Giving a sparse representation of the matrix, i.e. a list of entries,
+    return a numpy matrix representation of this matrix.
+    """
     a = numpy.zeros(shape=(numUser,numUser))
     for entry in sparse:
         (i, j), n = entry
@@ -69,6 +82,9 @@ testinput = {u'1': [u'3', u'4'],
              u'4': [u'1', u'2']}
 
 def output_vec(network):
+    """
+    Output the final rank calculated by the numpy eigenvector library.
+    """
     index, following = id_2_index(network)
     sparse,n = to_sparse_matrix(network,index, following)
     m = to_numpy(sparse, n)
@@ -78,6 +94,10 @@ def output_vec(network):
     print e_vecs
 
 def count_num_dangling(following) :
+    """
+    Count the number of dangling users in the graph, i.e. users who do not
+    follow any one.
+    """
     num_dangling = 0
     for user, num in following.items():
         if num == 0 :
@@ -85,6 +105,9 @@ def count_num_dangling(following) :
     return num_dangling;
 
 def output_converge(network, iterations):
+    """
+    Output the rank calculated by the iterative algorithm.
+    """
     index, following = id_2_index(network)
     #print count_num_dangling(following)
     sparse,n = to_sparse_matrix(network,index, following)
